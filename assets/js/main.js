@@ -69,7 +69,12 @@ const DOMManipulationModule = (function () {
 
     function displayTodayWeather(data) {
         const { current, location: weatherLocation } = data;
-        const { temp_c, last_updated_epoch: epochTime } = current;
+        const {
+            temp_c,
+            last_updated_epoch: epochTime,
+            wind_kph: wind,
+        } = current;
+        const { daily_chance_of_rain: rain } = data.forecast.forecastday[0].day;
         const { name } = weatherLocation;
         const { icon, text: weatherStatus } = current.condition;
 
@@ -92,6 +97,8 @@ const DOMManipulationModule = (function () {
             ".weather-icon"
         ).innerHTML = `<img src="${icon}" alt="alt" />`;
         todayWeather.querySelector(".weather-status").innerHTML = weatherStatus;
+        todayWeather.querySelector(".rain").innerHTML = `${rain}%`;
+        todayWeather.querySelector(".wind").innerHTML = `${wind}km/h`;
     }
 
     function displayNextDaysWeather(data) {
@@ -140,11 +147,17 @@ const DOMManipulationModule = (function () {
         }
     }
 
+    function showAndHideMobileLinks() {
+        const ulMobile = document.querySelector(".links-for-mobile");
+        ulMobile.classList.toggle("active");
+    }
+
     function hideLoader() {
         if (isLoaded) {
             setTimeout(() => {
                 loader.style.display = "none";
-            }, 1000)
+                document.body.style.overflow = "auto";
+            }, 1000);
         }
     }
 
@@ -152,6 +165,7 @@ const DOMManipulationModule = (function () {
         displayTodayWeather,
         displayNextDaysWeather,
         hideLoader,
+        showAndHideMobileLinks,
     };
 })();
 
@@ -200,3 +214,9 @@ searchInput.addEventListener("input", function (e) {
         }
     }, 1000);
 });
+
+// ^ On Click
+const mobileLinksBar = document.querySelector(".bar");
+mobileLinksBar.addEventListener("click", function () {
+    DOMManipulationModule.showAndHideMobileLinks();
+})
