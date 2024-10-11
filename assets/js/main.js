@@ -29,7 +29,7 @@ async function getCityName(position) {
 }
 
 async function getWeather(location) {
-    let url = `http://api.weatherapi.com/v1/forecast.json?q=${location}&days=3&key=cc99b604e6c74dddb30164703240810`;
+    let url = `https://api.weatherapi.com/v1/forecast.json?q=${location}&days=3&key=cc99b604e6c74dddb30164703240810`;
     const response = await fetch(url);
     const data = await response.json();
     return data;
