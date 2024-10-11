@@ -7,6 +7,9 @@
         <title>Weather App</title>
     </head>
     <body>
+        <div class="loader-container" id="loader">
+            <div class="loader"></div>
+        </div>
         <nav>
             <div class="container">
                 <div class="logo">
@@ -40,7 +43,7 @@
                 <div class="search">
                     <input
                         type="text"
-                        id="seacrhInput"
+                        id="searchInput"
                         placeholder="Find your location"
                         autocomplete="off"
                     />
@@ -48,10 +51,53 @@
                 </div>
                 <div class="cards">
                     <div class="card today" id="todayWeather">
-                        
+                        <div class="header">
+                            <div class="day-name">friday</div>
+                            <div class="date">october 12, 2020</div>
+                        </div>
+                        <div class="body">
+                            <div class="location-name">cairo</div>
+                            <div class="degree">22<sup>o</sup>C</div>
+                            <div class="weather-icon">
+                                <img src="./assets/images/113.png" alt="alt" />
+                            </div>
+                            <div class="weather-status">Cloudy</div>
+                            <div class="other-info">Wind: 6 km/h</div>
+                        </div>
                     </div>
                     <div class="next-days-cards" id="nextDays">
-                        
+                        <div class="card next-days">
+                            <div class="header">
+                                <div class="day-name">Saturday</div>
+                            </div>
+                            <div class="body">
+                                <div class="weather-icon">
+                                    <img
+                                        src="./assets/images/113.png"
+                                        alt="alt"
+                                    />
+                                </div>
+                                <div class="degree-max">22<sup>o</sup>C</div>
+                                <div class="degree-min">12<sup>o</sup>C</div>
+                                <div class="weather-status">Cloudy</div>
+                            </div>
+                        </div>
+                        <div class="card next-days">
+                            <div class="header">
+                                <div class="day-name">Sunday</div>
+                            </div>
+                            <div class="body">
+                                <div class="weather-icon">
+                                    <img
+                                        src="./assets/images/113.png"
+                                        alt="alt"
+                                    />
+                                </div>
+                                <div class="degree-max">22<sup>o</sup>C</div>
+                                <div class="degree-min">12<sup>o</sup>C</div>
+                                <div class="weather-status">Cloudy</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

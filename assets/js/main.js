@@ -1,48 +1,73 @@
-// ^ get html elements
-const todayWeather = document.getElementById("todayWeather");
-const nextDaysWeatherCards = document.getElementById("nextDays");
-const searchInput = document.getElementById("seacrhInput");
+const GeolocationModule = (function () {
+    async function getGeoLocation() {
+        return new Promise((resolve, reject) => {
+            function onSuccess(position) {
+                resolve(position.coords);
+            }
+            function onError(err) {
+                reject(err);
+            }
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);
+            } else {
+                reject(
+                    new Error("Geolocation is not supported by this browser")
+                );
+            }
+        });
+    }
 
-// !========== i can't use Async&Await in this function ====================
-function getGeoLocation() {
-    return new Promise((resolve, reject) => {
-        function onSuccess(position) {
-            resolve(getCityName(position.coords));
+    return {
+        getGeoLocation,
+    };
+})();
+
+const WeatherAPIModule = (function () {
+    const WEATHER_API_KEY = "cc99b604e6c74dddb30164703240810";
+    const GEOCODE_API_KEY = "e648d3463fa14394a69a9328c4a71255";
+
+    async function getCityName({ latitude, longitude }) {
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&key=${GEOCODE_API_KEY}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to fetch the city name");
+            const data = await response.json();
+            return data.results.length > 0
+                ? data.results[0]?.components?.town ||
+                      data.results[0]?.components?.city
+                : null;
+        } catch (err) {
+            console.log(err);
+            return null;
         }
-        function onError(err) {
-            reject(err);
+    }
+
+    async function getWeather(location) {
+        const url = `https://api.weatherapi.com/v1/forecast.json?q=${location}&days=3&key=${WEATHER_API_KEY}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to fetch the weather");
+            const data = await response.json();
+            return data;
+        } catch (err) {
+            console.log(err);
+            return null;
         }
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        }
-    });
-}
+    }
 
-async function getCityName(position) {
-    const { latitude, longitude } = position;
-    const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}%2C${longitude}&key=e648d3463fa14394a69a9328c4a71255`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const currentCityOrTown =
-        data.results[0].components?.town || data.results[0].components?.city;
-    return currentCityOrTown;
-}
+    return {
+        getCityName,
+        getWeather,
+    };
+})();
 
-async function getWeather(location) {
-    let url = `https://api.weatherapi.com/v1/forecast.json?q=${location}&days=3&key=cc99b604e6c74dddb30164703240810`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-}
+const DOMManipulationModule = (function () {
+    let isLoaded = false;
+    const loader = document.getElementById("loader");
+    const todayWeather = document.getElementById("todayWeather");
+    const nextDaysWeatherCards = document.getElementById("nextDays");
 
-function clearCards() {
-    todayWeather.innerHTML = "";
-    nextDaysWeatherCards.innerHTML = "";
-}
-
-async function displayWeather(location) {
-    const data = await getWeather(location);
-    const displayToday = () => {
+    function displayTodayWeather(data) {
         const { current, location: weatherLocation } = data;
         const { temp_c, last_updated_epoch: epochTime } = current;
         const { name } = weatherLocation;
@@ -56,84 +81,122 @@ async function displayWeather(location) {
             day: "numeric",
         });
         const [dayName, monthAndDay] = today.split(",");
-        console.log();
-        console.log();
 
-        todayWeather.innerHTML = `
-        <div class="header">
-            <div class="day-name">${dayName}</div>
-            <div class="date">${monthAndDay.trim()}</div>
-        </div>
-        <div class="body">
-            <div class="location-name">${name}</div>
-            <div class="degree">${temp_c + "<sup>o</sup>C"}
-            </div>
-            <div class="weather-icon">
-                <img src="${icon}" alt="alt" />
-            </div>
-            <div class="weather-status">${weatherStatus}</div>
-            <div class="other-info">Wind: 6 km/h</div>
-        </div>
-        `;
-    };
-    const displayNextDays = () => {
-        for (let index = 1; index < data.forecast.forecastday.length; index++) {
-            const { condition, maxtemp_c, mintemp_c } =
-                data.forecast.forecastday[index].day;
-            const { icon, text: weatherStatus } = condition;
-            const epochTime = data.forecast.forecastday[index].date_epoch;
-            const date = new Date(epochTime * 1000);
-            const today = date.toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
-            const [dayName] = today.split(",");
+        todayWeather.querySelector(".day-name").innerHTML = dayName.trim();
+        todayWeather.querySelector(".date").innerHTML = monthAndDay;
+        todayWeather.querySelector(".location-name").innerHTML = name;
+        todayWeather.querySelector(
+            ".degree"
+        ).innerHTML = `${temp_c}<sup>o</sup>C`;
+        todayWeather.querySelector(
+            ".weather-icon"
+        ).innerHTML = `<img src="${icon}" alt="alt" />`;
+        todayWeather.querySelector(".weather-status").innerHTML = weatherStatus;
+    }
 
-            nextDaysWeatherCards.innerHTML += `
-            <div class="card next-days">
-                <div class="header">
-                    <div class="day-name">${dayName.trim()}</div>
-                </div>
-                <div class="body">
-                    <div class="weather-icon">
-                        <img
-                            src="${icon}"
-                            alt="alt"
-                        />
-                    </div>
-                    <div class="degree-max">${maxtemp_c + "<sup>o</sup>C"}</div>
-                    <div class="degree-min">${mintemp_c + "<sup>o</sup>C"}</div>
-                    <div class="weather-status">${weatherStatus}</div>
-                </div>
-            </div>
-            `;
+    function displayNextDaysWeather(data) {
+        const nextDayes = nextDaysWeatherCards.querySelectorAll(".next-days");
+        if (
+            data.forecast &&
+            data.forecast.forecastday &&
+            data.forecast.forecastday.length > 0
+        ) {
+            for (
+                let index = 1;
+                index < data.forecast.forecastday.length;
+                index++
+            ) {
+                const { condition, maxtemp_c, mintemp_c } =
+                    data.forecast.forecastday[index].day;
+                const { icon, text: weatherStatus } = condition;
+                const epochTime = data.forecast.forecastday[index].date_epoch;
+                const date = new Date(epochTime * 1000);
+                const today = date.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                });
+                const [dayName] = today.split(",");
+                const day = nextDayes[index - 1];
+                day.querySelector(".day-name").innerHTML = dayName.trim();
+                day.querySelector(
+                    ".weather-icon"
+                ).innerHTML = `<img src="${icon}" alt="alt" />`;
+                day.querySelector(
+                    ".degree-max"
+                ).innerHTML = `${maxtemp_c}<sup>o</sup>C`;
+                day.querySelector(
+                    ".degree-min"
+                ).innerHTML = `${mintemp_c}<sup>o</sup>C`;
+                day.querySelector(".weather-status").innerHTML = weatherStatus;
+            }
+        } else {
+            console.log("No forecast data available");
         }
+
+        if (!isLoaded) {
+            isLoaded = true;
+        }
+    }
+
+    function hideLoader() {
+        if (isLoaded) {
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 1000)
+        }
+    }
+
+    return {
+        displayTodayWeather,
+        displayNextDaysWeather,
+        hideLoader,
     };
+})();
 
-    if (data?.current) {
-        clearCards();
-        displayToday();
-        displayNextDays();
-    } else {
-        clearCards();
-        displayWeather("cairo");
+const MainModule = (function (Geolocation, WeatherAPI, DOMManipulation) {
+    async function displayCurrentLocationWeather() {
+        try {
+            const coords = await Geolocation.getGeoLocation();
+            const city = await WeatherAPI.getCityName(coords);
+            await displayWeather(city);
+        } catch (err) {
+            console.log(err);
+            displayWeather("Cairo"); // ^ Default to Cairo if geolocation fails
+        }
+        DOMManipulationModule.hideLoader();
     }
-}
 
-async function displayCurrentLocationWeather() {
-    try {
-        const location = await getGeoLocation();
-        await displayWeather(location);
-    } catch (err) {
-        console.log(err);
-        displayWeather("cairo");
+    async function displayWeather(location) {
+        const data = await WeatherAPI.getWeather(location);
+        if (data?.current) {
+            DOMManipulation.displayTodayWeather(data);
+            DOMManipulation.displayNextDaysWeather(data);
+        } else {
+            displayCurrentLocationWeather();
+        }
     }
-}
 
-displayCurrentLocationWeather();
+    return {
+        displayCurrentLocationWeather,
+        displayWeather,
+    };
+})(GeolocationModule, WeatherAPIModule, DOMManipulationModule);
 
+MainModule.displayCurrentLocationWeather();
+
+// ^ On Search
+const searchInput = document.getElementById("searchInput");
+let debounceTimer;
 searchInput.addEventListener("input", function (e) {
-    displayWeather(this.value);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        const location = e.target.value;
+        if (location) {
+            MainModule.displayWeather(location);
+        } else {
+            MainModule.displayCurrentLocationWeather();
+        }
+    }, 1000);
 });
