@@ -37,6 +37,22 @@ img {
 body {
     overflow: hidden;
 }
+
+::selection {
+    background-color: var(--main-color);
+    color: #fff;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background-color: #323544;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--main-color);
+    border-radius: 2.5px;
+}
+
 /* ^ Extra Small (xs) */
 @media (max-width: 576px) {
     .container {
@@ -273,7 +289,12 @@ main .search {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-block: 60px;
+    margin-block: 50px;
+}
+@media (max-width: 992px) {
+    main .search {
+        margin-block: 25px;
+    }
 }
 main .search input {
     background-color: transparent;
@@ -391,6 +412,12 @@ main .cards .next-days-cards .card {
     main .cards .next-days-cards .card {
         width: 100%;
     }
+    main .cards .next-days-cards .card:nth-of-type(1) {
+        border-bottom-left-radius: 0;
+    }
+    main .cards .next-days-cards .card:nth-of-type(2) {
+        border-bottom-left-radius: 10px;
+    }
 }
 main .cards .card.today .footer {
     margin-top: 10px;
@@ -458,5 +485,8 @@ footer {
     padding: 30px 20px;
     text-align: center;
     color: #bfc1c8;
+}
+footer a {
+    color: var(--main-color);
 }
 /* ^ End of Footer Styles */
