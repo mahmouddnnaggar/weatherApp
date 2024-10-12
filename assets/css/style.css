@@ -127,7 +127,12 @@ body {
 nav {
     background-color: #1e202b;
     color: #fff;
-    padding-block: 30px;
+    padding-block: 20px;
+}
+@media (max-width: 992px) {
+    nav {
+        padding-block: 10px;
+    }
 }
 nav .container {
     display: flex;
@@ -214,8 +219,8 @@ nav ul.links {
         display: none;
     }
 }
-nav ul.links li a {
-    font-size: 14px;
+nav ul li a {
+    font-size: 15px;
     border: 2px solid var(--main-color);
     border-color: transparent;
     border-radius: 20px;
@@ -237,7 +242,7 @@ nav ul.links-for-mobile {
 }
 nav ul.links-for-mobile.active {
     padding-top: 20px;
-    height: 355px;
+    height: 410px;
 }
 nav ul.links-for-mobile li a {
     width: 100%;
@@ -252,6 +257,10 @@ nav ul.links-for-mobile li:hover a {
 nav ul.links-for-mobile li:first-of-type {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+}
+nav ul.links-for-mobile li:last-of-type {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 nav ul.links-for-mobile li {
     width: 100%;
@@ -300,10 +309,11 @@ main .search input {
     background-color: transparent;
     outline: none;
     border: none;
-    padding-block: 20px;
+    padding-block: 18px;
     width: 80%;
     height: 100%;
     color: #fff;
+    font-size: 19px;
 }
 main .search button {
     padding: 16px 25px;
