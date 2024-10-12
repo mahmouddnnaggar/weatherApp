@@ -153,12 +153,17 @@ const DOMManipulationModule = (function () {
     }
 
     function hideLoader() {
-        if (isLoaded) {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (isLoaded) {
                 loader.style.display = "none";
                 document.body.style.overflow = "auto";
-            }, 1000);
-        }
+            } else {
+                setTimeout(() => {
+                    loader.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }, 2000);
+            }
+        }, 3000);
     }
 
     return {
@@ -219,4 +224,4 @@ searchInput.addEventListener("input", function (e) {
 const mobileLinksBar = document.querySelector(".bar");
 mobileLinksBar.addEventListener("click", function () {
     DOMManipulationModule.showAndHideMobileLinks();
-})
+});
