@@ -1,161 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="assets/css/style.css" />
-        <title>Weather App</title>
-    </head>
-    <body>
-        <div class="loader-container" id="loader">
-            <div class="loader"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Weather App</title>
+  </head>
+  <body>
+    <div class="loader-container" id="loader">
+      <div class="loader"></div>
+    </div>
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <img src="assets/images/logo2x.png" alt="our logo" />
+          <div class="text">
+            <h1>Weather</h1>
+            <span>tagline goes here</span>
+          </div>
         </div>
-        <nav>
-            <div class="container">
-                <div class="logo">
-                    <img src="assets/images/logo2x.png" alt="our logo" />
-                    <div class="text">
-                        <h1>Weather</h1>
-                        <span>tagline goes here</span>
-                    </div>
-                </div>
-                <div class="bar">
-                    <span></span>
-                </div>
-                <ul class="links">
-                    <li>
-                        <a href="#" class="active">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">News</a>
-                    </li>
-                    <li>
-                        <a href="#">Live Cameras</a>
-                    </li>
-                    <li>
-                        <a href="#">Photos</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-                <ul class="links-for-mobile">
-                    <li>
-                        <a href="#" class="active">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">News</a>
-                    </li>
-                    <li>
-                        <a href="#">Live Cameras</a>
-                    </li>
-                    <li>
-                        <a href="#">Photos</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
+        <div class="bar">
+          <span></span>
+        </div>
+        <ul class="links">
+          <li>
+            <a href="#" class="active">Home</a>
+          </li>
+          <li>
+            <a href="#">News</a>
+          </li>
+          <li>
+            <a href="#">Live Cameras</a>
+          </li>
+          <li>
+            <a href="#">Photos</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+        <ul class="links-for-mobile">
+          <li>
+            <a href="#" class="active">Home</a>
+          </li>
+          <li>
+            <a href="#">News</a>
+          </li>
+          <li>
+            <a href="#">Live Cameras</a>
+          </li>
+          <li>
+            <a href="#">Photos</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="search">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Find your location"
+            autocomplete="off"
+          />
+          <button id="search-btn">Search</button>
+        </div>
+        <div class="cards">
+          <div class="card today" id="todayWeather">
+            <div class="header">
+              <div class="day-name">friday</div>
+              <div class="date">october 12, 2020</div>
             </div>
-        </nav>
-        <main>
-            <div class="container">
-                <div class="search">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Find your location"
-                        autocomplete="off"
-                    />
-                    <button id="search-btn">Search</button>
-                </div>
-                <div class="cards">
-                    <div class="card today" id="todayWeather">
-                        <div class="header">
-                            <div class="day-name">friday</div>
-                            <div class="date">october 12, 2020</div>
-                        </div>
-                        <div class="body">
-                            <div class="location-name">cairo</div>
-                            <div class="degree">22<sup>o</sup>C</div>
-                            <div class="weather-icon">
-                                <img src="./assets/images/113.png" alt="alt" />
-                            </div>
-                            <div class="weather-status">Cloudy</div>
-                            <div class="footer">
-                                <span>
-                                    <img
-                                        src="assets/images/icon-umberella.png"
-                                        alt="umberella"
-                                    />
-                                    <span class="rain">20%</span>
-                                </span>
-                                <span>
-                                    <img
-                                        src="assets/images/icon-wind.png"
-                                        alt="wind"
-                                    />
-                                    <span class="wind">18km/h</span>
-                                </span>
-                                <span>
-                                    <img
-                                        src="assets/images/icon-compass.png"
-                                        alt="compass"
-                                    />
-                                    <span class="compass">East</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="next-days-cards" id="nextDays">
-                        <div class="card next-days">
-                            <div class="header">
-                                <div class="day-name">Saturday</div>
-                            </div>
-                            <div class="body">
-                                <div class="weather-icon">
-                                    <img
-                                        src="./assets/images/113.png"
-                                        alt="alt"
-                                    />
-                                </div>
-                                <div class="degree-max">22<sup>o</sup>C</div>
-                                <div class="degree-min">12<sup>o</sup>C</div>
-                                <div class="weather-status">Cloudy</div>
-                            </div>
-                        </div>
-                        <div class="card next-days">
-                            <div class="header">
-                                <div class="day-name">Sunday</div>
-                            </div>
-                            <div class="body">
-                                <div class="weather-icon">
-                                    <img
-                                        src="./assets/images/113.png"
-                                        alt="alt"
-                                    />
-                                </div>
-                                <div class="degree-max">22<sup>o</sup>C</div>
-                                <div class="degree-min">12<sup>o</sup>C</div>
-                                <div class="weather-status">Cloudy</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="body">
+              <div class="location-name">cairo</div>
+              <div class="degree">22<sup>o</sup>C</div>
+              <div class="weather-icon">
+                <img src="./assets/images/113.png" alt="alt" />
+              </div>
+              <div class="weather-status">Cloudy</div>
+              <div class="footer">
+                <span>
+                  <img src="assets/images/icon-umberella.png" alt="umberella" />
+                  <span class="rain">20%</span>
+                </span>
+                <span>
+                  <img src="assets/images/icon-wind.png" alt="wind" />
+                  <span class="wind">18km/h</span>
+                </span>
+                <span>
+                  <img src="assets/images/icon-compass.png" alt="compass" />
+                  <span class="compass">East</span>
+                </span>
+              </div>
             </div>
-        </main>
-        <footer>
-            <div class="container">
-                <p>
-                    Developed with 💙 by
-                    <a
-                        target="_blank"
-                        href="https://www.facebook.com/profile.php?id=100057238871457"
-                        >Mahmoud El-Naggar</a
-                    > designed by Themezy
-                </p>
+          </div>
+          <div class="next-days-cards" id="nextDays">
+            <div class="card next-days">
+              <div class="header">
+                <div class="day-name">Saturday</div>
+              </div>
+              <div class="body">
+                <div class="weather-icon">
+                  <img src="./assets/images/113.png" alt="alt" />
+                </div>
+                <div class="degree-max">22<sup>o</sup>C</div>
+                <div class="degree-min">12<sup>o</sup>C</div>
+                <div class="weather-status">Cloudy</div>
+              </div>
             </div>
-        </footer>
-        <script src="assets/js/main.js"></script>
-    </body>
+            <div class="card next-days">
+              <div class="header">
+                <div class="day-name">Sunday</div>
+              </div>
+              <div class="body">
+                <div class="weather-icon">
+                  <img src="./assets/images/113.png" alt="alt" />
+                </div>
+                <div class="degree-max">22<sup>o</sup>C</div>
+                <div class="degree-min">12<sup>o</sup>C</div>
+                <div class="weather-status">Cloudy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>
+          Developed with 💙 by
+          <a
+            target="_blank"
+            href="https://www.facebook.com/profile.php?id=100057238871457"
+            >Mahmoud El-Naggar</a
+          >
+          designed by Themezy
+        </p>
+      </div>
+    </footer>
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
